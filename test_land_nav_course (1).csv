@@ -1,0 +1,55 @@
+test
+Magnetic Declination: 9.5° E
+
+Waypoint Coordinates
+Waypoint,Coordinates
+A,"N31° 56.743', W109° 57.546'"
+B,"N31° 56.904', W109° 57.469'"
+C,"N31° 56.812', W109° 57.272'"
+D,"N31° 56.598', W109° 57.312'"
+
+Bearing and Distance Matrix
+From,To,True Bearing (°T),Magnetic Bearing (°M),Distance (m),Distance (km)
+A,B,22.1,12.6,322,0.32
+A,C,73.5,64.0,449,0.45
+A,D,126.1,116.6,456,0.46
+B,A,202.1,192.6,322,0.32
+B,C,118.8,109.3,354,0.35
+B,D,156.5,147.0,619,0.62
+C,A,253.5,244.0,449,0.45
+C,B,298.8,289.3,354,0.35
+C,D,189.0,179.5,402,0.40
+D,A,306.1,296.6,456,0.46
+D,B,336.5,327.0,619,0.62
+D,C,9.0,359.5,402,0.40
+
+
+TEAM NAVIGATION ROUTES
+
+Team 1
+Grid Coordinate Course - Find in any order:
+A,"N31° 56.743', W109° 57.546'"
+B,"N31° 56.904', W109° 57.469'"
+C,"N31° 56.812', W109° 57.272'"
+D,"N31° 56.598', W109° 57.312'"
+
+Team 2
+Grid Coordinate Course - Find in any order:
+B,"N31° 56.904', W109° 57.469'"
+C,"N31° 56.812', W109° 57.272'"
+D,"N31° 56.598', W109° 57.312'"
+A,"N31° 56.743', W109° 57.546'"
+
+Team 3
+Grid Coordinate Course - Find in any order:
+C,"N31° 56.812', W109° 57.272'"
+D,"N31° 56.598', W109° 57.312'"
+A,"N31° 56.743', W109° 57.546'"
+B,"N31° 56.904', W109° 57.469'"
+
+Team 4
+Grid Coordinate Course - Find in any order:
+D,"N31° 56.598', W109° 57.312'"
+A,"N31° 56.743', W109° 57.546'"
+B,"N31° 56.904', W109° 57.469'"
+C,"N31° 56.812', W109° 57.272'"

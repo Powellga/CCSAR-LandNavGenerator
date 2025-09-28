@@ -1,7 +1,8 @@
 # Cochise County SAR Land Nav Course Creator
 
 A web-based tool for creating land navigation training courses for Search and Rescue teams. Generate waypoint coordinates, bearing/distance matrices, and team-specific navigation routes for SAR training exercises.
-https://powellga.github.io/CCSAR-LandNavGenerator/
+
+Launch here: https://powellga.github.io/CCSAR-LandNavGenerator/
 
 ## Features
 

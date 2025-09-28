@@ -550,13 +550,24 @@
         }
 
         function parseDD(coord) {
+            // Try different formats: "lat, lon" or "lon, lat"
             const parts = coord.split(',').map(p => p.trim());
             if (parts.length !== 2) return null;
             
-            const lon = parseFloat(parts[0]);
-            const lat = parseFloat(parts[1]);
+            // Try parsing both ways to handle lat,lon or lon,lat
+            let lat = parseFloat(parts[0]);
+            let lon = parseFloat(parts[1]);
             
-            if (isNaN(lon) || isNaN(lat)) return null;
+            // Check if valid
+            if (isNaN(lat) || isNaN(lon)) return null;
+            
+            // If first value is > 90, assume it's lon,lat format
+            if (Math.abs(lat) > 90 && Math.abs(lon) <= 90) {
+                // Swap them
+                [lat, lon] = [lon, lat];
+            }
+            
+            // Validate ranges
             if (Math.abs(lat) > 90 || Math.abs(lon) > 180) return null;
             
             return { lat, lon };
@@ -1070,7 +1081,7 @@
             const declinationDir = document.getElementById('declinationDir').value;
             
             let csv = `${courseName}\n`;
-            csv += `Magnetic Declination: ${declination}° ${declinationDir}\n\n`;
+            csv += `Magnetic Declination: ${declination} ${declinationDir}\n\n`;
             csv += 'Waypoint Coordinates\n';
             csv += 'Waypoint,Coordinates\n';
             

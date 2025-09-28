@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cochise County SAR Land Nav Course Creator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6B6C66 0%, #8B8C86 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+
+        .emblem {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #6B6C66;
+            flex: 1;
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .form-section:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            color: #6B6C66;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #6B6C66;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus, select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #6B6C66;
+            box-shadow: 0 0 0 3px rgba(107, 108, 102, 0.1);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 30px;
+            margin-top: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 8px;
+            cursor: pointer;
+            transform: scale(1.2);
+        }
+
+        .coordinate-inputs {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .coordinate-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .coordinate-label {
+            min-width: 30px;
+            font-weight: bold;
+            color: #6B6C66;
+            font-size: 1.2em;
+        }
+
+        .coordinate-input input {
+            flex: 1;
+        }
+
+        button {
+            background: linear-gradient(135deg, #6B6C66, #8B8C86);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(107, 108, 102, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error {
+            color: #e74c3c;
+            margin-top: 5px;
+            font-size: 14px;
+            animation: shake 0.3s ease-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #6B6C66;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #6B6C66, #8B8C86);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+            transition: background 0.3s ease;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .coordinate-header {
+            font-weight: bold;
+            color: #6B6C66;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .format-hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .team-route {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #6B6C66;
+        }
+
+        .team-route h4 {
+            color: #6B6C66;
+            margin-bottom: 10px;
+        }
+
+        .route-points {
+            margin-left: 20px;
+        }
+
+        .route-leg {
+            margin: 8px 0;
+            padding: 5px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-container">
+            <img src="CCSAR.jpg" alt="Cochise County SAR" class="emblem" onerror="this.style.display='none'">
+            <h1>Cochise County SAR Land Nav Course Creator</h1>
+        </div>
+        <div class="subtitle">Generate bearing and distance tables for Search and Rescue training</div>
+        
+        <div class="form-section">
+            <div class="section-title">Basic Course Information</div>
+            <label for="courseName">Course Name:</label>
+            <input type="text" id="courseName" placeholder="Enter course name (e.g., Huachuca Mountains Training)">
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">Coordinate Settings</div>
+            <label>Coordinate Format:</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="format" value="dd" checked>
+                    <span>Decimal Degrees (DD)</span>
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="format" value="ddm">
+                    <span>Degrees Decimal Minutes (DDM)</span>
+                </label>
+            </div>
+            <div class="format-hint" id="formatHint">
+                Format: -110.123456, 31.123456
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">Navigation Settings</div>
+            <label for="declination">Magnetic Declination:</label>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="number" id="declination" value="9.5" step="0.1" style="width: 100px;">
+                <select id="declinationDir" style="width: 100px;">
+                    <option value="E">East</option>
+                    <option value="W">West</option>
+                </select>
+            </div>
+            <div class="format-hint">Enter local magnetic declination (default: 9.5° E for Cochise County)</div>
+
+            <label style="margin-top: 15px;">Distance Units:</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="units" value="metric" checked>
+                    <span>Metric (meters/km)</span>
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="units" value="imperial">
+                    <span>Imperial (feet/miles)</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">Waypoint Setup</div>
+            <label for="numPoints">Number of Waypoints:</label>
+            <select id="numPoints">
+                <option value="">Select number of waypoints</option>
+                <option value="4">4 waypoints</option>
+                <option value="6">6 waypoints</option>
+                <option value="8">8 waypoints</option>
+                <option value="10">10 waypoints</option>
+            </select>
+        </div>
+
+        <div class="form-section" id="coordinatesSection" style="display: none;">
+            <label>Enter Coordinates:</label>
+            <div id="coordinateInputs" class="coordinate-inputs"></div>
+            <div id="coordinateError" class="error"></div>
+        </div>
+
+        <div class="form-section" id="teamSection" style="display: none;">
+            <div class="section-title">Team Route Configuration</div>
+            
+            <label>Course Type:</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="courseType" value="grid" checked>
+                    <span>Grid Coordinate Course</span>
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="courseType" value="bearing">
+                    <span>Bearing/Distance Course</span>
+                </label>
+            </div>
+            <div class="format-hint">Grid: Teams find points in any order | Bearing: Teams follow specific sequence</div>
+
+            <label style="margin-top: 15px;" for="numTeams">Number of Teams:</label>
+            <select id="numTeams">
+                <option value="0">No team routes</option>
+                <option value="2">2 teams</option>
+                <option value="3">3 teams</option>
+                <option value="4">4 teams</option>
+                <option value="5">5 teams</option>
+            </select>
+
+            <label for="pointsPerTeam">Points per Team:</label>
+            <select id="pointsPerTeam">
+                <option value="3">3 points</option>
+                <option value="4">4 points</option>
+                <option value="5">5 points</option>
+            </select>
+        </div>
+
+        <div class="button-group">
+            <button id="createBtn" style="display: none;" onclick="createCourse()">Create Course</button>
+            <button id="clearBtn" style="display: none;" onclick="clearAll()">Clear All</button>
+            <button id="downloadBtn" style="display: none;" onclick="downloadResults()">Download Results</button>
+        </div>
+
+        <div id="results" class="results" style="display: none;"></div>
+    </div>
+
+    <script>
+        let coordinates = [];
+        let courseName = '';
+        let teamRoutes = [];
+
+        // Update format hint when radio changes
+        document.querySelectorAll('input[name="format"]').forEach(radio => {
+            radio.addEventListener('change', updateFormatHint);
+        });
+
+        function updateFormatHint() {
+            const format = document.querySelector('input[name="format"]:checked').value;
+            const hint = document.getElementById('formatHint');
+            if (format === 'dd') {
+                hint.textContent = 'Format: -110.123456, 31.123456';
+            } else {
+                hint.textContent = 'Formats: 31 56.513, -109 57.632  OR  31° 56.513\', -109° 57.632\'';
+            }
+        }
+
+        // Handle number of points selection
+        document.getElementById('numPoints').addEventListener('change', function() {
+            const num = parseInt(this.value);
+            if (num) {
+                generateCoordinateInputs(num);
+                document.getElementById('coordinatesSection').style.display = 'block';
+                document.getElementById('teamSection').style.display = 'block';
+                document.getElementById('createBtn').style.display = 'inline-block';
+                document.getElementById('clearBtn').style.display = 'inline-block';
+                
+                // Update team options based on number of waypoints
+                updateTeamOptions(num);
+            } else {
+                document.getElementById('coordinatesSection').style.display = 'none';
+                document.getElementById('teamSection').style.display = 'none';
+                document.getElementById('createBtn').style.display = 'none';
+                document.getElementById('clearBtn').style.display = 'none';
+            }
+        });
+        
+        function updateTeamOptions(numWaypoints) {
+            const teamSelect = document.getElementById('numTeams');
+            const currentValue = teamSelect.value;
+            
+            // Clear and rebuild options
+            teamSelect.innerHTML = '<option value="0">No team routes</option>';
+            
+            // Only add team options up to the number of waypoints
+            for (let i = 2; i <= Math.min(5, numWaypoints); i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `${i} teams`;
+                teamSelect.appendChild(option);
+            }
+            
+            // Restore previous selection if still valid
+            if (currentValue && parseInt(currentValue) <= numWaypoints) {
+                teamSelect.value = currentValue;
+            } else {
+                teamSelect.value = '0';
+            }
+            
+            // Add a note about the limitation
+            const teamSection = document.getElementById('teamSection');
+            let note = document.getElementById('teamNote');
+            if (!note) {
+                note = document.createElement('div');
+                note.id = 'teamNote';
+                note.className = 'format-hint';
+                note.style.marginTop = '10px';
+                note.style.color = '#e74c3c';
+                const teamConfig = teamSection.querySelector('label[for="numTeams"]').parentElement;
+                teamConfig.appendChild(note);
+            }
+            
+            if (numWaypoints < 5) {
+                note.textContent = `Note: Maximum ${numWaypoints} teams (must not exceed number of waypoints)`;
+                note.style.display = 'block';
+            } else {
+                note.style.display = 'none';
+            }
+        }
+
+        function generateCoordinateInputs(num) {
+            const container = document.getElementById('coordinateInputs');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < num; i++) {
+                const label = String.fromCharCode(65 + i); // A, B, C, etc.
+                const div = document.createElement('div');
+                div.className = 'coordinate-input';
+                
+                const format = document.querySelector('input[name="format"]:checked').value;
+                const placeholder = format === 'dd' 
+                    ? 'e.g., -110.123456, 31.123456' 
+                    : 'e.g., 31 56.513, -109 57.632';
+                
+                div.innerHTML = `
+                    <span class="coordinate-label">${label}:</span>
+                    <input type="text" id="coord${label}" placeholder="${placeholder}">
+                `;
+                container.appendChild(div);
+            }
+        }
+
+        function parseDD(coord) {
+            const parts = coord.split(',').map(p => p.trim());
+            if (parts.length !== 2) return null;
+            
+            const lon = parseFloat(parts[0]);
+            const lat = parseFloat(parts[1]);
+            
+            if (isNaN(lon) || isNaN(lat)) return null;
+            if (Math.abs(lat) > 90 || Math.abs(lon) > 180) return null;
+            
+            return { lat, lon };
+        }
+
+        function parseDDM(coord) {
+            // Parse multiple DDM formats:
+            // Format 1: -110° 7.407', 31° 7.407'
+            // Format 2: 31 56.513, -109 57.632
+            // Format 3: N31 56.513, W109 57.632
+            
+            // Remove any degree symbols, apostrophes, commas
+            const cleaned = coord.replace(/[°']/g, ' ').trim();
+            
+            // Try to parse as lat, lon or lon, lat
+            let parts = cleaned.split(/,|\s{2,}/).map(p => p.trim());
+            
+            if (parts.length === 1) {
+                // Maybe space-separated without clear delimiter
+                // Try to split by finding pattern: number space number space number space number
+                const numbers = cleaned.match(/[NSEW]?\s*-?\d+\.?\d*\s+\d+\.?\d*/g);
+                if (numbers && numbers.length === 2) {
+                    parts = numbers;
+                }
+            }
+            
+            if (parts.length !== 2) return null;
+            
+            let lat = null, lon = null;
+            
+            for (let part of parts) {
+                // Check for hemisphere indicators
+                const hasN = part.includes('N');
+                const hasS = part.includes('S');
+                const hasE = part.includes('E');
+                const hasW = part.includes('W');
+                
+                // Remove hemisphere indicators for parsing
+                const cleanPart = part.replace(/[NSEW]/gi, '').trim();
+                
+                // Extract degrees and minutes
+                const match = cleanPart.match(/(-?\d+\.?\d*)\s+(\d+\.?\d*)/);
+                if (!match) continue;
+                
+                const deg = parseFloat(match[1]);
+                const min = parseFloat(match[2]);
+                
+                if (isNaN(deg) || isNaN(min)) continue;
+                
+                // Calculate decimal degrees
+                let dd = Math.abs(deg) + min / 60;
+                
+                // Apply sign based on hemisphere or original sign
+                if (deg < 0 || hasS || hasW) dd = -dd;
+                
+                // Determine if this is lat or lon based on value range or indicators
+                if (hasN || hasS || (Math.abs(dd) <= 90 && lat === null && !hasE && !hasW)) {
+                    lat = dd;
+                } else {
+                    lon = dd;
+                }
+            }
+            
+            // If we only got one value, try assuming order based on magnitude
+            if ((lat === null) !== (lon === null)) {
+                const values = parts.map(part => {
+                    const cleanPart = part.replace(/[NSEW]/gi, '').trim();
+                    const match = cleanPart.match(/(-?\d+\.?\d*)\s+(\d+\.?\d*)/);
+                    if (!match) return null;
+                    const deg = parseFloat(match[1]);
+                    const min = parseFloat(match[2]);
+                    return Math.abs(deg) + min / 60;
+                });
+                
+                if (values[0] && values[1]) {
+                    // Typically lat is smaller than lon in absolute value for US coordinates
+                    if (Math.abs(values[0]) <= 90 && Math.abs(values[1]) <= 180) {
+                        lat = values[0];
+                        lon = -Math.abs(values[1]); // Assume western hemisphere for lon
+                    } else if (Math.abs(values[1]) <= 90 && Math.abs(values[0]) <= 180) {
+                        lat = values[1];
+                        lon = -Math.abs(values[0]); // Assume western hemisphere for lon
+                    }
+                }
+            }
+            
+            if (lat === null || lon === null) return null;
+            if (Math.abs(lat) > 90 || Math.abs(lon) > 180) return null;
+            
+            return { lat, lon };
+        }
+
+        function validateCoordinates() {
+            const format = document.querySelector('input[name="format"]:checked').value;
+            const num = parseInt(document.getElementById('numPoints').value);
+            coordinates = [];
+            
+            for (let i = 0; i < num; i++) {
+                const label = String.fromCharCode(65 + i);
+                const input = document.getElementById(`coord${label}`);
+                const value = input.value.trim();
+                
+                if (!value) {
+                    showError(`Waypoint ${label} is empty`);
+                    return false;
+                }
+                
+                const parsed = format === 'dd' ? parseDD(value) : parseDDM(value);
+                
+                if (!parsed) {
+                    showError(`Invalid coordinate format for waypoint ${label}`);
+                    return false;
+                }
+                
+                coordinates.push({ label, ...parsed, original: value });
+            }
+            
+            document.getElementById('coordinateError').textContent = '';
+            return true;
+        }
+
+        function showError(message) {
+            document.getElementById('coordinateError').textContent = message;
+        }
+
+        function toRadians(deg) {
+            return deg * (Math.PI / 180);
+        }
+
+        function toDegrees(rad) {
+            return rad * (180 / Math.PI);
+        }
+
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371000; // Earth radius in meters
+            const φ1 = toRadians(lat1);
+            const φ2 = toRadians(lat2);
+            const Δφ = toRadians(lat2 - lat1);
+            const Δλ = toRadians(lon2 - lon1);
+            
+            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                      Math.cos(φ1) * Math.cos(φ2) *
+                      Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            
+            return R * c; // Distance in meters
+        }
+
+        function calculateBearing(lat1, lon1, lat2, lon2) {
+            const φ1 = toRadians(lat1);
+            const φ2 = toRadians(lat2);
+            const Δλ = toRadians(lon2 - lon1);
+            
+            const y = Math.sin(Δλ) * Math.cos(φ2);
+            const x = Math.cos(φ1) * Math.sin(φ2) -
+                      Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
+            
+            let bearing = toDegrees(Math.atan2(y, x));
+            return (bearing + 360) % 360; // Normalize to 0-360
+        }
+
+        function applyDeclination(trueBearing) {
+            const declination = parseFloat(document.getElementById('declination').value) || 0;
+            const direction = document.getElementById('declinationDir').value;
+            
+            // For East declination, subtract from true to get magnetic
+            // For West declination, add to true to get magnetic
+            let magneticBearing = direction === 'E' 
+                ? trueBearing - declination 
+                : trueBearing + declination;
+            
+            // Normalize to 0-360 range
+            magneticBearing = (magneticBearing + 360) % 360;
+            
+            return magneticBearing;
+        }
+
+        function formatCoordinate(lat, lon, format) {
+            if (format === 'dd') {
+                return `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+            } else {
+                // Convert to DDM
+                const latDeg = Math.floor(Math.abs(lat));
+                const latMin = (Math.abs(lat) - latDeg) * 60;
+                const lonDeg = Math.floor(Math.abs(lon));
+                const lonMin = (Math.abs(lon) - lonDeg) * 60;
+                
+                const latDir = lat >= 0 ? 'N' : 'S';
+                const lonDir = lon >= 0 ? 'E' : 'W';
+                
+                return `${latDir}${latDeg} ${latMin.toFixed(3)}', ${lonDir}${lonDeg} ${lonMin.toFixed(3)}'`;
+            }
+        }
+
+        function distributePointsToTeams(numTeams, pointsPerTeam) {
+            const totalPoints = coordinates.length;
+            
+            // Check if we have enough unique points for perfect distribution
+            const needUniquePoints = numTeams * pointsPerTeam;
+            
+            if (totalPoints >= needUniquePoints) {
+                // We have enough points for no overlap at all
+                return distributeNoOverlap(numTeams, pointsPerTeam);
+            } else {
+                // Need to distribute with rotation/offset pattern
+                return distributeWithRotation(numTeams, pointsPerTeam, totalPoints);
+            }
+        }
+        
+        function distributeNoOverlap(numTeams, pointsPerTeam) {
+            const totalPoints = coordinates.length;
+            const assignments = Array(numTeams).fill(null).map(() => []);
+            
+            // Create array of all point indices
+            const indices = Array.from({length: totalPoints}, (_, i) => i);
+            
+            // Fisher-Yates shuffle to randomize
+            for (let i = indices.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [indices[i], indices[j]] = [indices[j], indices[i]];
+            }
+            
+            // Distribute points to teams
+            let idx = 0;
+            for (let team = 0; team < numTeams; team++) {
+                for (let p = 0; p < pointsPerTeam; p++) {
+                    if (idx < indices.length) {
+                        assignments[team].push(indices[idx++]);
+                    }
+                }
+            }
+            
+            return assignments;
+        }
+        
+        function distributeWithRotation(numTeams, pointsPerTeam, totalPoints) {
+            const assignments = Array(numTeams).fill(null).map(() => []);
+            
+            // When we don't have enough unique points, use a rotation pattern
+            // This ensures teams start at different points
+            
+            if (totalPoints >= pointsPerTeam) {
+                // We have at least enough points for one team
+                // Create a base sequence and rotate it for each team
+                
+                for (let team = 0; team < numTeams; team++) {
+                    for (let p = 0; p < pointsPerTeam; p++) {
+                        // Rotate the starting position for each team
+                        const pointIndex = (team + p) % totalPoints;
+                        assignments[team].push(pointIndex);
+                    }
+                }
+                
+            } else {
+                // Not enough points even for one team - repeat points as needed
+                for (let team = 0; team < numTeams; team++) {
+                    for (let p = 0; p < pointsPerTeam; p++) {
+                        // Start each team at a different point and cycle through
+                        const pointIndex = (team + p) % totalPoints;
+                        assignments[team].push(pointIndex);
+                    }
+                }
+            }
+            
+            // For bearing/distance courses, optimize the route order
+            const courseType = document.querySelector('input[name="courseType"]:checked')?.value || 'grid';
+            if (courseType === 'bearing') {
+                for (let team = 0; team < numTeams; team++) {
+                    // Keep the first point as the starting point, optimize the rest
+                    if (assignments[team].length > 2) {
+                        const start = assignments[team][0];
+                        const remaining = assignments[team].slice(1);
+                        const optimized = optimizeRouteFromStart(start, remaining);
+                        assignments[team] = [start, ...optimized];
+                    }
+                }
+            }
+            
+            return assignments;
+        }
+        
+        function optimizeRouteFromStart(startIdx, remainingIndices) {
+            if (remainingIndices.length <= 1) return remainingIndices;
+            
+            const route = [];
+            const remaining = [...remainingIndices];
+            let currentIdx = startIdx;
+            
+            while (remaining.length > 0) {
+                let nearest = 0;
+                let minDist = Infinity;
+                
+                for (let i = 0; i < remaining.length; i++) {
+                    const dist = calculateDistance(
+                        coordinates[currentIdx].lat, coordinates[currentIdx].lon,
+                        coordinates[remaining[i]].lat, coordinates[remaining[i]].lon
+                    );
+                    if (dist < minDist) {
+                        minDist = dist;
+                        nearest = i;
+                    }
+                }
+                
+                currentIdx = remaining[nearest];
+                route.push(remaining[nearest]);
+                remaining.splice(nearest, 1);
+            }
+            
+            return route;
+        }
+
+        function optimizeRoute(pointIndices) {
+            if (pointIndices.length <= 2) return pointIndices;
+            
+            // Simple nearest neighbor algorithm
+            const route = [pointIndices[0]];
+            const remaining = pointIndices.slice(1);
+            
+            while (remaining.length > 0) {
+                const current = route[route.length - 1];
+                let nearest = 0;
+                let minDist = Infinity;
+                
+                for (let i = 0; i < remaining.length; i++) {
+                    const dist = calculateDistance(
+                        coordinates[current].lat, coordinates[current].lon,
+                        coordinates[remaining[i]].lat, coordinates[remaining[i]].lon
+                    );
+                    if (dist < minDist) {
+                        minDist = dist;
+                        nearest = i;
+                    }
+                }
+                
+                route.push(remaining[nearest]);
+                remaining.splice(nearest, 1);
+            }
+            
+            return route;
+        }
+
+        function createCourse() {
+            if (!validateCoordinates()) return;
+            
+            // Additional validation for teams vs waypoints
+            const numberOfTeams = parseInt(document.getElementById('numTeams').value) || 0;
+            const numWaypoints = coordinates.length;
+            
+            if (numberOfTeams > numWaypoints) {
+                showError(`Cannot have more teams (${numberOfTeams}) than waypoints (${numWaypoints}). Each team needs a unique starting point.`);
+                return;
+            }
+            
+            courseName = document.getElementById('courseName').value || 'Unnamed Course';
+            const units = document.querySelector('input[name="units"]:checked').value;
+            const format = document.querySelector('input[name="format"]:checked').value;
+            const useMetric = units === 'metric';
+            const declination = parseFloat(document.getElementById('declination').value) || 0;
+            const declinationDir = document.getElementById('declinationDir').value;
+            
+            let html = `<h2>${courseName}</h2>`;
+            html += `<p style="color: #666; margin-bottom: 20px;">Magnetic Declination: ${declination}° ${declinationDir}</p>`;
+            
+            // Coordinates table - only show in chosen format
+            html += '<h3>Waypoint Coordinates</h3>';
+            html += '<table><thead><tr><th>Waypoint</th><th>Coordinates</th></tr></thead><tbody>';
+            
+            coordinates.forEach(coord => {
+                const formatted = formatCoordinate(coord.lat, coord.lon, format);
+                html += `<tr>
+                    <td class="coordinate-header">${coord.label}</td>
+                    <td>${formatted}</td>
+                </tr>`;
+            });
+            
+            html += '</tbody></table>';
+            
+            // Bearing and distance table
+            html += '<h3>Bearing and Distance Matrix</h3>';
+            
+            if (useMetric) {
+                html += '<table><thead><tr><th>From → To</th><th>True Bearing (°T)</th><th>Magnetic Bearing (°M)</th><th>Distance (m)</th><th>Distance (km)</th></tr></thead><tbody>';
+            } else {
+                html += '<table><thead><tr><th>From → To</th><th>True Bearing (°T)</th><th>Magnetic Bearing (°M)</th><th>Distance (ft)</th><th>Distance (mi)</th></tr></thead><tbody>';
+            }
+            
+            for (let i = 0; i < coordinates.length; i++) {
+                for (let j = 0; j < coordinates.length; j++) {
+                    if (i !== j) {
+                        const from = coordinates[i];
+                        const to = coordinates[j];
+                        const trueBearing = calculateBearing(from.lat, from.lon, to.lat, to.lon);
+                        const magneticBearing = applyDeclination(trueBearing);
+                        const distanceMeters = calculateDistance(from.lat, from.lon, to.lat, to.lon);
+                        
+                        if (useMetric) {
+                            html += `<tr>
+                                <td><strong>${from.label} → ${to.label}</strong></td>
+                                <td>${trueBearing.toFixed(1)}°</td>
+                                <td>${magneticBearing.toFixed(1)}°</td>
+                                <td>${distanceMeters.toFixed(0)}</td>
+                                <td>${(distanceMeters / 1000).toFixed(2)}</td>
+                            </tr>`;
+                        } else {
+                            const distanceFeet = distanceMeters * 3.28084;
+                            const distanceMiles = distanceFeet / 5280;
+                            html += `<tr>
+                                <td><strong>${from.label} → ${to.label}</strong></td>
+                                <td>${trueBearing.toFixed(1)}°</td>
+                                <td>${magneticBearing.toFixed(1)}°</td>
+                                <td>${distanceFeet.toFixed(0)}</td>
+                                <td>${distanceMiles.toFixed(2)}</td>
+                            </tr>`;
+                        }
+                    }
+                }
+            }
+            
+            html += '</tbody></table>';
+            
+            // Team Routes
+            const numTeams = parseInt(document.getElementById('numTeams').value) || 0;
+            const pointsPerTeam = parseInt(document.getElementById('pointsPerTeam').value) || 3;
+            const courseType = document.querySelector('input[name="courseType"]:checked')?.value || 'grid';
+            
+            if (numTeams > 0) {
+                html += '<h3>Team Navigation Routes</h3>';
+                
+                const assignments = distributePointsToTeams(numTeams, pointsPerTeam);
+                teamRoutes = [];
+                
+                for (let team = 0; team < numTeams; team++) {
+                    let teamPoints = assignments[team];
+                    
+                    // For bearing/distance courses, the route is already optimized
+                    // For grid courses, we don't need to optimize the order
+                    
+                    teamRoutes.push({
+                        team: team + 1,
+                        points: teamPoints.map(idx => coordinates[idx]),
+                        courseType
+                    });
+                    
+                    html += `<div class="team-route">`;
+                    html += `<h4>Team ${team + 1}</h4>`;
+                    
+                    if (courseType === 'grid') {
+                        html += `<p>Find these ${pointsPerTeam} points in any order:</p>`;
+                        html += '<div class="route-points">';
+                        
+                        for (let idx of teamPoints) {
+                            const coord = coordinates[idx];
+                            const formatted = formatCoordinate(coord.lat, coord.lon, format);
+                            html += `<div class="route-leg">• <strong>${coord.label}:</strong> ${formatted}</div>`;
+                        }
+                        html += '</div>';
+                    } else {
+                        html += `<p>Follow this sequential route:</p>`;
+                        html += '<div class="route-points">';
+                        
+                        let totalDist = 0;
+                        html += `<div class="route-leg"><strong>Start:</strong> Navigate to ${coordinates[teamPoints[0]].label}: ${formatCoordinate(coordinates[teamPoints[0]].lat, coordinates[teamPoints[0]].lon, format)}</div>`;
+                        
+                        for (let i = 0; i < teamPoints.length - 1; i++) {
+                            const from = coordinates[teamPoints[i]];
+                            const to = coordinates[teamPoints[i + 1]];
+                            const trueBearing = calculateBearing(from.lat, from.lon, to.lat, to.lon);
+                            const magneticBearing = applyDeclination(trueBearing);
+                            const dist = calculateDistance(from.lat, from.lon, to.lat, to.lon);
+                            totalDist += dist;
+                            
+                            if (useMetric) {
+                                html += `<div class="route-leg"><strong>Leg ${i + 1}:</strong> ${from.label} → ${to.label} | Bearing: ${magneticBearing.toFixed(1)}°M | Distance: ${dist.toFixed(0)}m</div>`;
+                            } else {
+                                const distFeet = dist * 3.28084;
+                                html += `<div class="route-leg"><strong>Leg ${i + 1}:</strong> ${from.label} → ${to.label} | Bearing: ${magneticBearing.toFixed(1)}°M | Distance: ${distFeet.toFixed(0)}ft</div>`;
+                            }
+                        }
+                        
+                        if (useMetric) {
+                            html += `<div class="route-leg"><strong>Total Distance:</strong> ${totalDist.toFixed(0)}m (${(totalDist/1000).toFixed(2)}km)</div>`;
+                        } else {
+                            const totalFeet = totalDist * 3.28084;
+                            html += `<div class="route-leg"><strong>Total Distance:</strong> ${totalFeet.toFixed(0)}ft (${(totalFeet/5280).toFixed(2)}mi)</div>`;
+                        }
+                        html += '</div>';
+                    }
+                    
+                    html += '</div>';
+                }
+            }
+            
+            document.getElementById('results').innerHTML = html;
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('downloadBtn').style.display = 'inline-block';
+        }
+
+        function clearAll() {
+            document.getElementById('courseName').value = '';
+            document.getElementById('numPoints').value = '';
+            document.getElementById('numTeams').value = '0';
+            document.getElementById('coordinatesSection').style.display = 'none';
+            document.getElementById('teamSection').style.display = 'none';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('createBtn').style.display = 'none';
+            document.getElementById('clearBtn').style.display = 'none';
+            document.getElementById('downloadBtn').style.display = 'none';
+            document.getElementById('coordinateError').textContent = '';
+            coordinates = [];
+            teamRoutes = [];
+        }
+
+        function downloadResults() {
+            if (coordinates.length === 0) return;
+            
+            const units = document.querySelector('input[name="units"]:checked').value;
+            const format = document.querySelector('input[name="format"]:checked').value;
+            const useMetric = units === 'metric';
+            const declination = parseFloat(document.getElementById('declination').value) || 0;
+            const declinationDir = document.getElementById('declinationDir').value;
+            
+            let csv = `${courseName}\n`;
+            csv += `Magnetic Declination: ${declination}° ${declinationDir}\n\n`;
+            csv += 'Waypoint Coordinates\n';
+            csv += 'Waypoint,Coordinates\n';
+            
+            coordinates.forEach(coord => {
+                const formatted = formatCoordinate(coord.lat, coord.lon, format);
+                csv += `${coord.label},"${formatted}"\n`;
+            });
+            
+            csv += '\nBearing and Distance Matrix\n';
+            
+            if (useMetric) {
+                csv += 'From,To,True Bearing (°T),Magnetic Bearing (°M),Distance (m),Distance (km)\n';
+                
+                for (let i = 0; i < coordinates.length; i++) {
+                    for (let j = 0; j < coordinates.length; j++) {
+                        if (i !== j) {
+                            const from = coordinates[i];
+                            const to = coordinates[j];
+                            const trueBearing = calculateBearing(from.lat, from.lon, to.lat, to.lon);
+                            const magneticBearing = applyDeclination(trueBearing);
+                            const distance = calculateDistance(from.lat, from.lon, to.lat, to.lon);
+                            
+                            csv += `${from.label},${to.label},${trueBearing.toFixed(1)},${magneticBearing.toFixed(1)},${distance.toFixed(0)},${(distance / 1000).toFixed(2)}\n`;
+                        }
+                    }
+                }
+            } else {
+                csv += 'From,To,True Bearing (°T),Magnetic Bearing (°M),Distance (ft),Distance (mi)\n';
+                
+                for (let i = 0; i < coordinates.length; i++) {
+                    for (let j = 0; j < coordinates.length; j++) {
+                        if (i !== j) {
+                            const from = coordinates[i];
+                            const to = coordinates[j];
+                            const trueBearing = calculateBearing(from.lat, from.lon, to.lat, to.lon);
+                            const magneticBearing = applyDeclination(trueBearing);
+                            const distanceMeters = calculateDistance(from.lat, from.lon, to.lat, to.lon);
+                            const distanceFeet = distanceMeters * 3.28084;
+                            const distanceMiles = distanceFeet / 5280;
+                            
+                            csv += `${from.label},${to.label},${trueBearing.toFixed(1)},${magneticBearing.toFixed(1)},${distanceFeet.toFixed(0)},${distanceMiles.toFixed(2)}\n`;
+                        }
+                    }
+                }
+            }
+            
+            // Add team routes if applicable
+            if (teamRoutes.length > 0) {
+                csv += '\n\nTEAM NAVIGATION ROUTES\n';
+                
+                teamRoutes.forEach(route => {
+                    csv += `\nTeam ${route.team}\n`;
+                    
+                    if (route.courseType === 'grid') {
+                        csv += 'Grid Coordinate Course - Find in any order:\n';
+                        route.points.forEach(point => {
+                            const formatted = formatCoordinate(point.lat, point.lon, format);
+                            csv += `${point.label},"${formatted}"\n`;
+                        });
+                    } else {
+                        csv += 'Bearing/Distance Course - Follow in sequence:\n';
+                        csv += `Start,Navigate to ${route.points[0].label},"${formatCoordinate(route.points[0].lat, route.points[0].lon, format)}"\n`;
+                        
+                        let totalDist = 0;
+                        for (let i = 0; i < route.points.length - 1; i++) {
+                            const from = route.points[i];
+                            const to = route.points[i + 1];
+                            const trueBearing = calculateBearing(from.lat, from.lon, to.lat, to.lon);
+                            const magneticBearing = applyDeclination(trueBearing);
+                            const dist = calculateDistance(from.lat, from.lon, to.lat, to.lon);
+                            totalDist += dist;
+                            
+                            if (useMetric) {
+                                csv += `Leg ${i + 1},${from.label} → ${to.label},${magneticBearing.toFixed(1)}°M,${dist.toFixed(0)}m\n`;
+                            } else {
+                                const distFeet = dist * 3.28084;
+                                csv += `Leg ${i + 1},${from.label} → ${to.label},${magneticBearing.toFixed(1)}°M,${distFeet.toFixed(0)}ft\n`;
+                            }
+                        }
+                        
+                        if (useMetric) {
+                            csv += `Total Distance,,${totalDist.toFixed(0)}m,(${(totalDist/1000).toFixed(2)}km)\n`;
+                        } else {
+                            const totalFeet = totalDist * 3.28084;
+                            csv += `Total Distance,,${totalFeet.toFixed(0)}ft,(${(totalFeet/5280).toFixed(2)}mi)\n`;
+                        }
+                    }
+                });
+            }
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${courseName.replace(/[^a-z0-9]/gi, '_')}_land_nav_course.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

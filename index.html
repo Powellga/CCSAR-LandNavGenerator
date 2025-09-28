@@ -384,9 +384,14 @@
             <select id="numPoints">
                 <option value="">Select number of waypoints</option>
                 <option value="4">4 waypoints</option>
+                <option value="5">5 waypoints</option>
                 <option value="6">6 waypoints</option>
+                <option value="7">7 waypoints</option>
                 <option value="8">8 waypoints</option>
+                <option value="9">9 waypoints</option>
                 <option value="10">10 waypoints</option>
+                <option value="11">11 waypoints</option>
+                <option value="12">12 waypoints</option>
             </select>
         </div>
 
@@ -485,8 +490,8 @@
             // Clear and rebuild options
             teamSelect.innerHTML = '<option value="0">No team routes</option>';
             
-            // Only add team options up to the number of waypoints
-            for (let i = 2; i <= Math.min(5, numWaypoints); i++) {
+            // Only add team options up to the number of waypoints (max 10 teams)
+            for (let i = 2; i <= Math.min(10, numWaypoints); i++) {
                 const option = document.createElement('option');
                 option.value = i;
                 option.textContent = `${i} teams`;
@@ -513,11 +518,12 @@
                 teamConfig.appendChild(note);
             }
             
-            if (numWaypoints < 5) {
+            if (numWaypoints < 10) {
                 note.textContent = `Note: Maximum ${numWaypoints} teams (must not exceed number of waypoints)`;
                 note.style.display = 'block';
             } else {
-                note.style.display = 'none';
+                note.textContent = 'Note: Maximum 10 teams available';
+                note.style.display = 'block';
             }
         }
 
@@ -894,15 +900,6 @@
 
         function createCourse() {
             if (!validateCoordinates()) return;
-            
-            // Additional validation for teams vs waypoints
-            const numberOfTeams = parseInt(document.getElementById('numTeams').value) || 0;
-            const numWaypoints = coordinates.length;
-            
-            if (numberOfTeams > numWaypoints) {
-                showError(`Cannot have more teams (${numberOfTeams}) than waypoints (${numWaypoints}). Each team needs a unique starting point.`);
-                return;
-            }
             
             courseName = document.getElementById('courseName').value || 'Unnamed Course';
             const units = document.querySelector('input[name="units"]:checked').value;
